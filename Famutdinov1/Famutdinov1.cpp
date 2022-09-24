@@ -6,13 +6,11 @@
 #include <fstream>
 using namespace std;
 
-bool flag = false;
-
-struct Pipe
+struct Pipestruct
 {
 	float length = 0;
 	float diameter = 0;
-	bool working = false;
+	int working = 1;
 };
 
 struct Compressor_Station
@@ -23,43 +21,80 @@ struct Compressor_Station
 	float station_efficiency = 0;
 };
 
-void add_pipe()
+
+float value_check(float check_variable)
 {
-	Pipe pipe_adding;
-	while (pipe_adding.length <= 0)
-	{	
+	while (!check_variable || check_variable <= 0)
+	{
+		cout << "Input value must be a number bigger than 0: ";
 		cin.clear();
-		pipe_adding.length = 0;
-		cout << "Enter a length of the pipe: ";
-		cin >> pipe_adding.length;
+		cin.ignore(INT_MAX, '\n');
+		cin >> check_variable;
 	}
+	return check_variable;
+}
+
+float work_check(float check_variable)
+{
+	while ((!check_variable) || (check_variable != 1)&&(check_variable != 2))
+	{
+		cout << "Input value must be a number 1 or a number 2: ";
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cin >> check_variable;
+	}
+	return check_variable;
+}
+
+float comparasion(float bigger_value, float lesser_value)
+{
+	while (!lesser_value || lesser_value > bigger_value || lesser_value <=0)
+	{
+		cout << endl;
+		cout << "Amount of functioning departments must be a number bigger than 0 \n and can't be bigger than amount of all departments: ";
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cin >> lesser_value;
+	}
+	return lesser_value;
 }
 
 int main()
 {
+	Pipestruct pipe;
+	Compressor_Station CS;
 	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load   0. Exit" << endl; 
 	int command_number;
 	cin >> command_number;
 	switch (command_number)
 	{
 	case 1:
-		add_pipe();
+		cout << "Pipe length: ";
+		cin >> pipe.length;
+		pipe.length = value_check(pipe.length);
+		cout << "Pipe diameter: ";
+		cin >> pipe.diameter;
+		pipe.diameter = value_check(pipe.diameter);
+		cout << "Is pipe working? (If it is - type 2 else type 1): ";
+		cin >> pipe.working;
+		pipe.working = work_check(pipe.working);
+		break;
+	case 2:
+		cout << "CS name: ";
+		cin >> CS.name;
+		cout << "Amount of departments: ";
+		cin >> CS.department_amount;
+		CS.department_amount = value_check(CS.department_amount);
+		cout << "Amount of functioning departments: ";
+		cin >> CS.functioning_department_amount;
+		CS.functioning_department_amount = comparasion(CS.department_amount, CS.functioning_department_amount);
+		cout << "CS efficiency";
+		cin >> CS.station_efficiency;
+		CS.station_efficiency = value_check(CS.station_efficiency);
 		break;
 	default:
 		cout << "Inpit correct number of command";
 		break;
 	}
-	getchar();
 	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file. В его словах есть буквы.
