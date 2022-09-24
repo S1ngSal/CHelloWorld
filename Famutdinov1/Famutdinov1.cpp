@@ -2,14 +2,55 @@
 //
 
 #include <iostream>
+#include <string>
+#include <fstream>
 using namespace std;
+
+bool flag = false;
+
+struct Pipe
+{
+	float length = 0;
+	float diameter = 0;
+	bool working = false;
+};
+
+struct Compressor_Station
+{
+	string name = "";
+	int department_amount = 0;
+	int functioning_department_amount = 0;
+	float station_efficiency = 0;
+};
+
+void add_pipe()
+{
+	Pipe pipe_adding;
+	while (pipe_adding.length <= 0)
+	{	
+		cin.clear();
+		pipe_adding.length = 0;
+		cout << "Enter a length of the pipe: ";
+		cin >> pipe_adding.length;
+	}
+}
 
 int main()
 {
-    int outer;
-    cin >> outer;
-    std::cout << outer << std::endl;
-    return 0;
+	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load   0. Exit" << endl; 
+	int command_number;
+	cin >> command_number;
+	switch (command_number)
+	{
+	case 1:
+		add_pipe();
+		break;
+	default:
+		cout << "Inpit correct number of command";
+		break;
+	}
+	getchar();
+	return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
