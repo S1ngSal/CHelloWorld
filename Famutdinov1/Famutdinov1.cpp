@@ -147,38 +147,10 @@ void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 
 void edit_pipe(Pipestruct& pipe1)
 {
-	int stop_edit = 0;
 	if (pipe1.length > 0) {
-		while (stop_edit != 4)
-		{
-			cout << "1. Edit pipe length   2. Edit pipe diameter   3. Edit pipe condition   4. Stop editing" << endl;
-			cin >> stop_edit;
-			stop_edit = error_check(stop_edit);
-			switch (stop_edit)
-			{
-			case 1:
-				cout << "Pipe length: ";
-				cin >> pipe1.length;
-				pipe1.length = value_check(pipe1.length);
-				break;
-			case 2:
-				cout << "Pipe diameter: ";
-				cin >> pipe1.diameter;
-				pipe1.diameter = value_check(pipe1.diameter);
-				break;
-			case 3:
-				cout << "Is pipe working? (If it is - type 2 else type 1): ";
-				cin >> pipe1.working;
-				pipe1.working = work_check(pipe1.working);
-				cout << endl;
-				break;
-			case 4:
-				break;
-			default:
-				cout << "Enter a valid command number" << endl;
-				break;
-			}
-		}
+		cout << "Is pipe working? (If it is - type 2 else type 1): ";
+		cin >> pipe1.working;
+		pipe1.working = work_check(pipe1.working);
 	}
 	else {
 		cout << "Pipe does not exist " << endl;
@@ -187,46 +159,29 @@ void edit_pipe(Pipestruct& pipe1)
 
 void edit_CS(Compressor_Station& CS1)
 {
-	int stop_edit_CS = 0;
 	if (CS1.department_amount > 0) {
-		while (stop_edit_CS != 5)
-		{
-			cout << "1. Edit CS name   2. Edit an amount of departments   3. Edit an amount of functioning departments\n4. Edit CS efficiency   5. Stop editing" << endl;
-			cin >> stop_edit_CS;
-			stop_edit_CS = error_check(stop_edit_CS);
-			switch (stop_edit_CS)
-			{
-			case 1:
-				cout << "CS name: ";
-				cin >> CS1.name;
-				break;
-			case 2:
-				cout << "Amount of departments: ";
-				cin >> CS1.department_amount;
-				CS1.department_amount = value_check(CS1.department_amount);
-				break;
-			case 3:
-				cout << "Amount of functioning departments: ";
-				cin >> CS1.functioning_department_amount;
-				CS1.functioning_department_amount = comparasion(CS1.department_amount, CS1.functioning_department_amount);
-				break;
-			case 4:
-				cout << "CS efficiency: ";
-				cin >> CS1.station_efficiency;
-				CS1.station_efficiency = value_check(CS1.station_efficiency);
-				break;
-			case 5:
-				break;
-			default:
-				cout << "Enter a valid command number" << endl;
-				break;
-			}
-		}
+		cout << "Amount of functioning departments: ";
+		cin >> CS1.functioning_department_amount;
+		CS1.functioning_department_amount = comparasion(CS1.department_amount, CS1.functioning_department_amount);
 	}
 	else {
 		cout << "Compressor station does not exist " << endl;
 	}
 }
+
+//void save_data(Pipestruct& pipe1, Compressor_Station& CS1)
+//{
+//	ofstream out;          
+//	out.open("pipeline.txt");
+//	if (out.is_open())
+//	{
+//		out << "Hello World!" << sendl;
+//	}
+//	else
+//	{
+//		cout << "End of program" << endl;
+//	}
+//}
 
 int main()
 {	
