@@ -20,7 +20,7 @@ struct Compressor_Station
 	int functioning_department_amount = 0;
 	float station_efficiency = 0;
 };
-//
+
 
 float value_check(float check_variable)
 {
