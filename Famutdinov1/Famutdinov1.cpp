@@ -1,6 +1,3 @@
-// Famutdinov1.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -44,7 +41,6 @@ float error_check(float check_variable)
 	}
 	return check_variable;
 }
-
 
 float work_check(float check_variable)
 {
@@ -199,6 +195,8 @@ void load_data(Pipestruct& pipe1, Compressor_Station& CS1)
 		cout << "Can not open file." << endl;
 	}
 }
+
+
 
 int main()
 {	
