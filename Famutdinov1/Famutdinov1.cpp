@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 using namespace std;
-
+//
 struct Pipestruct
 {
 	float length = 0;
@@ -16,7 +16,7 @@ struct Compressor_Station
 	int department_amount = 0;
 	int functioning_department_amount = 0;
 	float station_efficiency = 0;
-}
+};
 
 float value_check(float check_variable)
 {
