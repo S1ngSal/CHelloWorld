@@ -169,19 +169,37 @@ void edit_CS(Compressor_Station& CS1)
 	}
 }
 
-//void save_data(Pipestruct& pipe1, Compressor_Station& CS1)
-//{
-//	ofstream out;          
-//	out.open("pipeline.txt");
-//	if (out.is_open())
-//	{
-//		out << "Hello World!" << sendl;
-//	}
-//	else
-//	{
-//		cout << "End of program" << endl;
-//	}
-//}
+void save_data(Pipestruct& pipe1, Compressor_Station& CS1)
+{
+	ofstream out;          
+	out.open("pipeline.txt");
+	if (out.is_open())
+	{
+		out << pipe1.length << endl << pipe1.diameter << endl << pipe1.working << endl << endl << CS1.name << endl << CS1.department_amount << endl << CS1.functioning_department_amount << endl << CS1.station_efficiency;
+		cout << "Data has been saved." << endl;
+	}
+	else
+	{
+		cout << "Can not open file." << endl;
+	}
+}
+
+void load_data(Pipestruct& pipe1, Compressor_Station& CS1)
+{
+	ifstream inp;
+	inp.open("pipeline.txt");
+	if (inp.is_open())
+	{
+		inp >> pipe1.length >> pipe1.diameter >> pipe1.working;
+		inp.ignore();
+		inp >> CS1.name >> CS1.department_amount >> CS1.functioning_department_amount >> CS1.station_efficiency;
+		cout << "Data has been loaded." << endl;
+	}
+	else
+	{
+		cout << "Can not open file." << endl;
+	}
+}
 
 int main()
 {	
@@ -208,8 +226,10 @@ int main()
 			edit_CS(CS);
 			break;
 		case 6:
+			save_data(pipe, CS);
 			break;
 		case 7:
+			load_data(pipe, CS);
 			break;
 		case 8:
 			keep_running = false;
