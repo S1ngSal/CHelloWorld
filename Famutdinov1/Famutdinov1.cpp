@@ -74,7 +74,7 @@ float comparasion(float bigger_value, float lesser_value)
 
 int menu()
 {
-	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load   0. Exit" << endl;
+	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load   8. Exit" << endl;
 	int command_number;
 	cin >> command_number;
 	command_number = error_check(command_number);
@@ -232,7 +232,8 @@ int main()
 {	
 	Pipestruct pipe;
 	Compressor_Station CS;
-	while (true)
+	bool keep_running = true;
+	while (keep_running)
 	{
 		switch (menu())
 		{
@@ -254,6 +255,9 @@ int main()
 		case 6:
 			break;
 		case 7:
+			break;
+		case 8:
+			keep_running = false;
 			break;
 		default:
 			cout << endl << "Enter a valid command number" << endl;
