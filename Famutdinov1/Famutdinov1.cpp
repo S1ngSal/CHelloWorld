@@ -18,8 +18,10 @@ struct Compressor_Station
 	float station_efficiency = 0;
 };
 
-float value_check(float check_variable)
+float value_check()
 {
+	float check_variable;
+	cin >> check_variable;
 	while (!check_variable || check_variable <= 0)
 	{
 		cout << "Input value must be a number bigger than 0: ";
@@ -30,8 +32,10 @@ float value_check(float check_variable)
 	return check_variable;
 }
 
-float error_check(float check_variable)
+int error_check()
 {
+	int check_variable;
+	cin >> check_variable;
 	while (!check_variable)
 	{
 		cout << "Input value must be a number bigger than 0: ";
@@ -42,8 +46,10 @@ float error_check(float check_variable)
 	return check_variable;
 }
 
-float work_check(float check_variable)
+float work_check()
 {
+	float check_variable;
+	cin >> check_variable;
 	while ((!check_variable) || (check_variable != 1)&&(check_variable != 2))
 	{
 		cout << "Input value must be a number 1 or a number 2: ";
@@ -54,8 +60,10 @@ float work_check(float check_variable)
 	return check_variable;
 }
 
-float comparasion(float bigger_value, float lesser_value)
+float comparasion(float bigger_value)
 {
+	float lesser_value;
+	cin >> lesser_value;
 	while (!lesser_value || lesser_value > bigger_value || lesser_value < 0)
 	{
 		cout << endl;
@@ -70,23 +78,17 @@ float comparasion(float bigger_value, float lesser_value)
 int menu()
 {
 	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load   8. Exit" << endl;
-	int command_number;
-	cin >> command_number;
-	command_number = error_check(command_number);
-	return command_number;
+	return error_check();
 }
 
 void pipe_adding(Pipestruct& pipe1)
 {
 	cout << "Pipe length: ";
-	cin >> pipe1.length;
-	pipe1.length = value_check(pipe1.length);
+	pipe1.length = value_check();
 	cout << "Pipe diameter: ";
-	cin >> pipe1.diameter;
-	pipe1.diameter = value_check(pipe1.diameter);
+	pipe1.diameter = value_check();
 	cout << "Is pipe working? (If it is - type 2 else type 1): ";
-	cin >> pipe1.working;
-	pipe1.working = work_check(pipe1.working);
+	pipe1.working = work_check();
 	cout << endl;
 }
 
@@ -97,14 +99,11 @@ void CS_adding(Compressor_Station& CS1)
 	cin.ignore(INT_MAX, '\n');
 	getline(cin, CS1.name);
 	cout << "Amount of departments: ";
-	cin >> CS1.department_amount;
-	CS1.department_amount = value_check(CS1.department_amount);
+	CS1.department_amount = value_check();
 	cout << "Amount of functioning departments: ";
-	cin >> CS1.functioning_department_amount;
-	CS1.functioning_department_amount = comparasion(CS1.department_amount, CS1.functioning_department_amount);
+	CS1.functioning_department_amount = comparasion(CS1.department_amount);
 	cout << "CS efficiency: ";
-	cin >> CS1.station_efficiency;
-	CS1.station_efficiency = value_check(CS1.station_efficiency);
+	CS1.station_efficiency = value_check();
 	cout << endl;
 }
 
@@ -146,8 +145,7 @@ void edit_pipe(Pipestruct& pipe1)
 {
 	if (pipe1.length > 0) {
 		cout << "Is pipe working? (If it is - type 2 else type 1): ";
-		cin >> pipe1.working;
-		pipe1.working = work_check(pipe1.working);
+		pipe1.working = work_check();
 	}
 	else {
 		cout << "Pipe does not exist " << endl;
@@ -158,8 +156,7 @@ void edit_CS(Compressor_Station& CS1)
 {
 	if (CS1.department_amount > 0) {
 		cout << "Amount of functioning departments: ";
-		cin >> CS1.functioning_department_amount;
-		CS1.functioning_department_amount = comparasion(CS1.department_amount, CS1.functioning_department_amount);
+		CS1.functioning_department_amount = comparasion(CS1.department_amount);
 	}
 	else {
 		cout << "Compressor station does not exist " << endl;
