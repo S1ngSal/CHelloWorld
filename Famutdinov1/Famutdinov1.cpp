@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 using namespace std;
-//
+
 struct Pipestruct
 {
 	float length = 0;
@@ -93,7 +93,9 @@ void pipe_adding(Pipestruct& pipe1)
 void CS_adding(Compressor_Station& CS1)
 {
 	cout << "CS name: ";
-	cin >> CS1.name;
+	cin.clear();
+	cin.ignore(INT_MAX, '\n');
+	getline(cin, CS1.name);
 	cout << "Amount of departments: ";
 	cin >> CS1.department_amount;
 	CS1.department_amount = value_check(CS1.department_amount);
