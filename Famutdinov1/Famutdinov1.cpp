@@ -103,7 +103,7 @@ float comparasion(float bigger_value)
 
 int menu()
 {
-	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load   8. Exit" << endl;
+	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load \n 8. Delete a pipe   9. Delete a CS   10. Exit" << endl;
 	return error_check();
 }
 
@@ -145,18 +145,20 @@ void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 	if (Pipe_id > 0)
 	{
 		for (int i = 1; i <= Pipe_id; i++)
-		{
+		{	
 			auto it = pipemap.find(i);
-			cout << "Pipe " << i  << ":" << endl;
-			cout <<"  Pipe length: " << it->second.length << endl;
-			cout <<"  Pipe diameter: " << it->second.diameter << endl;
-			if (it->second.working == 2)
-			{
-				cout << "  Pipe is working" << endl;
-			}
-			else
-			{
-				cout << "  Pipe is not working" << endl;
+			if (it != pipemap.end()) {
+				cout << "Pipe " << i << ":" << endl;
+				cout << "  Pipe length: " << it->second.length << endl;
+				cout << "  Pipe diameter: " << it->second.diameter << endl;
+				if (it->second.working == 2)
+				{
+					cout << "  Pipe is working" << endl;
+				}
+				else
+				{
+					cout << "  Pipe is not working" << endl;
+				}
 			}
 		}
 		cout << endl;
@@ -173,17 +175,19 @@ void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 		for (int i = 1; i <= CS_id; i++)
 		{
 			auto it = CSmap.find(i);
-			cout << "Compressor Station " << i << ":" << endl;
-			cout << "  CS name: " << it->second.name << endl;
-			cout << "  Amount of deparments: " << it->second.department_amount << endl;
-			cout << "  Amount of functioning deparments: " << it->second.functioning_department_amount << endl;
-			cout << "  CS efficiency: " << it->second.station_efficiency << endl;
+			if (it != CSmap.end()) {
+				cout << "Compressor Station " << i << ":" << endl;
+				cout << "  CS name: " << it->second.name << endl;
+				cout << "  Amount of deparments: " << it->second.department_amount << endl;
+				cout << "  Amount of functioning deparments: " << it->second.functioning_department_amount << endl;
+				cout << "  CS efficiency: " << it->second.station_efficiency << endl;
+			}
 		}
 		cout << endl;
 	}
 	else
 	{
-		cout << "Compressor Station does not exist" << endl;
+		cout << "Compressor Stations does not exist" << endl;
 	}
 
 	cout << endl;
@@ -243,7 +247,19 @@ void load_data(Pipestruct& pipe1, Compressor_Station& CS1)
 	}
 } 
 
+void pipe_deleting(Pipestruct& pipe1)
+{
+	cout << "Input id of the pipe: " << endl;
+	int pipe_del_id = error_check();
+	pipemap.erase(pipe_del_id);
+}
 
+void CS_deleting(Compressor_Station& CS1)
+{
+	cout << "Input id of the CS: " << endl;
+	int CS_del_id = error_check();
+	CSmap.erase(CS_del_id);
+}
 
 int main()
 {	
@@ -284,6 +300,12 @@ int main()
 			load_data(pipe, CS);
 			break;
 		case 8:
+			pipe_deleting(pipe);
+			break;
+		case 9:
+			CS_deleting(CS);
+			break;
+		case 10:
 			keep_running = false;
 			break;
 		default:
