@@ -1,7 +1,12 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <map>
+
 using namespace std;
+
+int Pipe_id = 0;
+int CS_id = 0;
 
 struct Pipestruct
 {
@@ -10,6 +15,22 @@ struct Pipestruct
 	int working = 1;
 };
 
+//struct TestStruct
+//{
+//	float a;
+//	float b;
+//	float c;
+//};
+
+//typedef struct struct1 {
+//	int a;
+//	int b;
+//	float c;
+//	float d;
+//} my_struct_t;
+
+//std::map< float, my_struct_t > my_struct_map;
+
 struct Compressor_Station
 {
 	string name = "";
@@ -17,6 +38,11 @@ struct Compressor_Station
 	int functioning_department_amount = 0;
 	float station_efficiency = 0;
 };
+
+map<int, Pipestruct> pipemap;
+map<int, Compressor_Station> CSmap;
+pair<int, Pipestruct> pipepair;
+pair<int, Compressor_Station> CSpair;
 
 float value_check()
 {
@@ -83,6 +109,7 @@ int menu()
 
 void pipe_adding(Pipestruct& pipe1)
 {
+	Pipe_id ++;
 	cout << "Pipe length: ";
 	pipe1.length = value_check();
 	cout << "Pipe diameter: ";
@@ -90,10 +117,13 @@ void pipe_adding(Pipestruct& pipe1)
 	cout << "Is pipe working? (If it is - type 2 else type 1): ";
 	pipe1.working = work_check();
 	cout << endl;
+	pipepair = make_pair(Pipe_id, pipe1);
+	pipemap.insert(pipepair);
 }
 
 void CS_adding(Compressor_Station& CS1)
 {
+	CS_id++;
 	cout << "CS name: ";
 	cin.clear();
 	cin.ignore(INT_MAX, '\n');
@@ -105,6 +135,8 @@ void CS_adding(Compressor_Station& CS1)
 	cout << "CS efficiency: ";
 	CS1.station_efficiency = value_check();
 	cout << endl;
+	CSpair = make_pair(CS_id, CS1);
+	CSmap.insert(CSpair);
 }
 
 void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
@@ -193,12 +225,20 @@ void load_data(Pipestruct& pipe1, Compressor_Station& CS1)
 	{
 		cout << "Can not open file." << endl;
 	}
-}
+} 
 
 
 
 int main()
 {	
+
+//	my_struct_t st = { 1, 2, 3.0, 4.0 };
+//	std::pair< float, my_struct_t > p = std::make_pair(st.c, st);
+//	my_struct_map.insert(p);
+//	st = {5, 6, 7.0, 8.0};
+//	p = make_pair(1, st);
+//	my_struct_map.insert(p);
+
 	Pipestruct pipe;
 	Compressor_Station CS;
 	bool keep_running = true;
