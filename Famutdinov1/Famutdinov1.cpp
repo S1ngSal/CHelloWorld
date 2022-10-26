@@ -8,8 +8,9 @@ using namespace std;
 int Pipe_id = 0;
 int CS_id = 0;
 
-struct Pipestruct
+class Pipestruct
 {
+public:
 	float length = 0;
 	float diameter = 0;
 	int working = 1;
@@ -31,8 +32,9 @@ struct Pipestruct
 
 //std::map< float, my_struct_t > my_struct_map;
 
-struct Compressor_Station
+class Compressor_Station
 {
+public:
 	string name = "";
 	int department_amount = 0;
 	int functioning_department_amount = 0;
