@@ -142,34 +142,50 @@ void CS_adding(Compressor_Station& CS1)
 void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 {
 	cout << endl;
-	if (pipe1.length > 0) {
-		cout << "Pipe properties:" << endl;
-		cout << "Length: " << pipe1.length << endl;
-		cout << "Diameter " << pipe1.diameter << endl;
-		if (pipe1.working == 1) {
-			cout << "Pipe is not working" << endl;
-		}
-		else
+	if (Pipe_id > 0)
+	{
+		for (int i = 1; i <= Pipe_id; i++)
 		{
-			cout << "Pipe is working" << endl;
+			auto it = pipemap.find(i);
+			cout << "Pipe " << i  << ":" << endl;
+			cout <<"  Pipe length: " << it->second.length << endl;
+			cout <<"  Pipe diameter: " << it->second.diameter << endl;
+			if (it->second.working == 2)
+			{
+				cout << "  Pipe is working" << endl;
+			}
+			else
+			{
+				cout << "  Pipe is not working" << endl;
+			}
 		}
+		cout << endl;
 	}
 	else
 	{
-		cout << "Pipe does not exist" << endl;
+		cout <<"Pipes do not exist"<< endl;
 	}
 	cout << endl;
-	if (CS1.department_amount > 0) {
-		cout << "Compressor Station properties:" << endl;
-		cout << "CS name: " << CS1.name << endl;
-		cout << "Amount of departments: " << CS1.department_amount << endl;
-		cout << "Amount  of functioning departments " << CS1.functioning_department_amount << endl;
-		cout << "CS efficiency: " << CS1.station_efficiency << endl;
+
+
+	if (CS_id > 0)
+	{
+		for (int i = 1; i <= CS_id; i++)
+		{
+			auto it = CSmap.find(i);
+			cout << "Compressor Station " << i << ":" << endl;
+			cout << "  CS name: " << it->second.name << endl;
+			cout << "  Amount of deparments: " << it->second.department_amount << endl;
+			cout << "  Amount of functioning deparments: " << it->second.functioning_department_amount << endl;
+			cout << "  CS efficiency: " << it->second.station_efficiency << endl;
+		}
+		cout << endl;
 	}
 	else
 	{
 		cout << "Compressor Station does not exist" << endl;
 	}
+
 	cout << endl;
 }
 
