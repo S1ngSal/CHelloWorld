@@ -30,13 +30,12 @@ public:
 class Pipestruct
 {
 private:
-	int Pipe_id = 0;
-	map<int, Pipestruct> pipemap;
+public:
 	float length = 0;
 	float diameter = 0;
 	int working = 1;
-
-public:
+	int Pipe_id = 0;
+	map<int, Pipestruct> pipemap;
 
 	void pipe_adding(Pipestruct& pipe1)
 	{
@@ -107,13 +106,14 @@ public:
 class Compressor_Station
 {
 private:
-	int CS_id = 0;
-	map<int, Compressor_Station> CSmap;
+
 public:
 	string name = "";
 	int department_amount = 0;
 	int functioning_department_amount = 0;
 	float station_efficiency = 0;
+	int CS_id = 0;
+	map<int, Compressor_Station> CSmap;
 
 	void CS_adding(Compressor_Station& CS1)
 	{
@@ -232,17 +232,17 @@ int menu()
 
 
 
-/*
+
 
 void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 {
 	cout << endl;
-	if (Pipe_id > 0)
+	if (pipe1.Pipe_id > 0)
 	{
-		for (int i = 1; i <= Pipe_id; i++)
+		for (int i = 1; i <= pipe1.Pipe_id; i++)
 		{	
-			auto it = pipemap.find(i);
-			if (it != pipemap.end()) {
+			auto it = pipe1.pipemap.find(i);
+			if (it != pipe1.pipemap.end()) {
 				cout << "Pipe " << i << ":" << endl;
 				cout << "  Pipe length: " << it->second.length << endl;
 				cout << "  Pipe diameter: " << it->second.diameter << endl;
@@ -265,12 +265,12 @@ void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 	cout << endl;
 
 
-	if (CS_id > 0)
+	if (CS1.CS_id > 0)
 	{
-		for (int i = 1; i <= CS_id; i++)
+		for (int i = 1; i <= CS1.CS_id; i++)
 		{
-			auto it = CSmap.find(i);
-			if (it != CSmap.end()) {
+			auto it = CS1.CSmap.find(i);
+			if (it != CS1.CSmap.end()) {
 				cout << "Compressor Station " << i << ":" << endl;
 				cout << "  CS name: " << it->second.name << endl;
 				cout << "  Amount of deparments: " << it->second.department_amount << endl;
@@ -289,7 +289,7 @@ void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 }
 
 
-void save_data(Pipestruct& pipe1, Compressor_Station& CS1)
+/*void save_data(Pipestruct& pipe1, Compressor_Station& CS1)
 {
 	ofstream out;          
 	out.open("pipeline.txt");
@@ -323,8 +323,6 @@ void load_data(Pipestruct& pipe1, Compressor_Station& CS1)
 
 int main()
 {	
-	float e;
-	e = 3;
 //	my_struct_t st = { 1, 2, 3.0, 4.0 };
 //	std::pair< float, my_struct_t > p = std::make_pair(st.c, st);
 //	my_struct_map.insert(p);
@@ -346,9 +344,9 @@ int main()
 		case 2:
 			CS.CS_adding(CS);
 			break;
-	//	case 3:
-	//		inspect(pipe, CS);
-	//		break;
+		case 3:
+			inspect(pipe, CS);
+			break;
 		case 4:
 			pipe.edit_pipe(pipe);
 			break;
