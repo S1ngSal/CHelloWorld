@@ -31,6 +31,7 @@ class Pipestruct
 {
 private:
 public:
+	string pipe_name = "";
 	float length = 0;
 	float diameter = 0;
 	int working = 1;
@@ -40,6 +41,10 @@ public:
 	void pipe_adding(Pipestruct& pipe1)
 	{
 		Pipe_id++;
+		cout << "Pipe name: ";
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		getline(cin, pipe1.pipe_name);
 		cout << "Pipe length: ";
 		pipe1.length = value_check();
 		cout << "Pipe diameter: ";
@@ -83,7 +88,64 @@ public:
 		
 	}
 
-
+	void find_pipe(Pipestruct& pipe1)
+	{
+		if (Pipe_id > 0)
+		{
+			bool pipe_looking_switch = true;
+			while (pipe_looking_switch)
+			{
+				bool functioning_pipe_looking_switch = true;
+				cout << "Type 1 to find pipes on a name-basis" << endl;
+				cout << "Type 2 to find pipes on a functionong-basis" << endl;
+				cout << "Type 3 to stop looking for pipes" << endl;
+				switch (error_check())
+				{
+				case 1:
+					break;
+				case 2:
+					while (functioning_pipe_looking_switch)
+					{
+						cout << "Type 1 to find non-functioning pipes" << endl << "Type 2 to find functioning pipes" << endl << "Type 3 to stop looking for pipes on functioning-basis" << endl;
+						switch (error_check())
+						{
+						case 1:
+							for (int i = 1; i <= Pipe_id; i++)
+							{
+								if (pipemap[i].working == 1)
+								{
+									cout << "Pipe " << i << endl;
+									cout << "  Pipe name: " << pipemap[i].pipe_name << endl;
+									cout << "  Pipe length: " << pipemap[i].length << endl;
+									cout << "  Pipe diameter" << pipemap[i].diameter << endl;
+									cout << "  Pipe is not working" << endl;
+								}
+							}
+							break;
+						case 3:
+							functioning_pipe_looking_switch = false;
+							break;
+						default:
+							cout << endl << "Enter a valid command id" << endl;
+							break;
+						}
+					}
+					break;
+				case 3:
+					pipe_looking_switch = false;
+					break;
+				default:
+					cout << endl << "Enter a valid command id" << endl;
+					break;
+				}
+			}
+		}
+		else
+		{
+			cout << "Pipes do not exist " << endl;
+		}
+		
+	}
 
 };
 
@@ -226,7 +288,7 @@ float comparasion(float bigger_value)
 
 int menu()
 {
-	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load \n  8. Exit" << endl;
+	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load\n8.Look for a pipe   9. Exit" << endl;
 	return error_check();
 }
 
@@ -244,6 +306,7 @@ void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 			auto it = pipe1.pipemap.find(i);
 			if (it != pipe1.pipemap.end()) {
 				cout << "Pipe " << i << ":" << endl;
+				cout << "  Pipe name: " << pipe1.pipe_name << endl;
 				cout << "  Pipe length: " << it->second.length << endl;
 				cout << "  Pipe diameter: " << it->second.diameter << endl;
 				if (it->second.working == 2)
@@ -360,6 +423,9 @@ int main()
 	//		load_data(pipe, CS);
 	//		break;
 		case 8:
+			pipe.find_pipe(pipe);
+			break;
+		case 9:
 			keep_running = false;
 			break;
 		default:
