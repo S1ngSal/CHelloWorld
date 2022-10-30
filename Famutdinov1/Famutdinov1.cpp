@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <map>
+#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -36,7 +37,59 @@ public:
 	float diameter = 0;
 	int working = 1;
 	int Pipe_id = 0;
-	map<int, Pipestruct> pipemap;
+	unordered_map<int, Pipestruct> pipemap;
+	vector<int> pipefilter;
+	vector<int> deleted_pipes;
+
+	void show_pipe(int pipe_index) {
+		int count = 0;
+		for (int i = 0; i < deleted_pipes.size(); i++) {
+			if (pipe_index == deleted_pipes[i]) {
+				count++;
+			}
+		}
+		if (count == 0) {
+			cout << "Pipe " << pipe_index << endl;
+			cout << "  Pipe name: " << pipemap[pipe_index].pipe_name << endl;
+			cout << "  Pipe length: " << pipemap[pipe_index].length << endl;
+			cout << "  Pipe diameter: " << pipemap[pipe_index].diameter << endl;
+			if (pipemap[pipe_index].working == 1) {
+				cout << "  Pipe is not working" << endl;
+			}
+			else {
+				cout << "  Pipe is working" << endl;
+			}
+		}
+		else
+		{
+			cout << "Pipe "<< pipe_index <<" do not exist" << endl;
+		}
+		
+		
+	}
+
+	void pipe_name_filter() {
+		string input_name;
+		pipefilter.clear();
+		cout << "Input name: ";
+		cin >> input_name;
+		for (int i = 1; i <= Pipe_id; i++) {
+			if (pipemap[i].pipe_name.substr(0, size(input_name)) == input_name) {
+				pipefilter.push_back(i);
+			}
+		}
+	}
+
+	void pipe_functioning_filter(int x) {
+		pipefilter.clear();
+		for (int i = 1; i <= Pipe_id; i++)
+		{
+			if (pipemap[i].working == x)
+			{
+				pipefilter.push_back(i);
+			}
+		}
+	}
 
 	void pipe_adding(Pipestruct& pipe1)
 	{
@@ -55,27 +108,161 @@ public:
 		pipemap.insert(make_pair(Pipe_id,pipe1));
 	}
 
+	void pipe_redactng(int pipe_index)
+	{
+		if (Pipe_id > 0) {
+			cout << "Pipe " << pipe_index << endl;
+			cout << "Is pipe working? (If it is - type 2 else type 1): ";
+			pipemap[pipe_index].working = work_check();
+		}
+		else {
+			cout << "Pipe does not exist " << endl;
+		}
+	}
+
 	void edit_pipe(Pipestruct& pipe1)
 	{
+		int workings;
+		int left_limit;
 		bool pipe_edit_switch = true;
 		while (pipe_edit_switch)
 		{
-			cout << "Type 1 to edit pipes" << endl << "Type 2 to delete a pipe" << endl << "Type 3 to stop editing" << endl;
+			bool pipe_redact_switch = true;
+			cout << "Type 1 to redact pipes" << endl << "Type 2 to delete pipes" << endl << "Type 3 to stop editing" << endl;
 			switch (error_check())
 			{
 			case 1:
-				if (Pipe_id > 0) {
-					cout << "Is pipe working? (If it is - type 2 else type 1): ";
-					pipe1.working = work_check();
-				}
-				else {
-					cout << "Pipe does not exist " << endl;
+
+				cout << "1. Redact 1 pipe   2. Redact all pipes   3. Redact pipes on filter-basis   4. Stop redacting" << endl;
+				switch (error_check())
+				{
+				case 1:
+					cout << "Input index of a pipe: ";
+					left_limit = error_check();
+					pipe_redactng(left_limit);
+					break;
+				case 2:
+					cout << "Are pipes working? (If they are - type 2 else type 1): ";
+					workings = work_check();
+					for (int i = 1; i <= Pipe_id; i++) {
+						pipemap[i].working = workings;
+					}
+					break;
+				case 3:
+					cout << "Type 1 to redact pipes on a name-basis" << endl;
+					cout << "Type 2 to redact pipes on a functionong-basis" << endl;
+					switch (error_check())
+					{
+					case 1:
+						pipe_name_filter();
+						cout << "Are pipes working? (If they are - type 2 else type 1): ";
+						workings = work_check();
+						for (int i = 0; i < pipefilter.size(); i++) {
+							pipemap[pipefilter[i]].working = workings;
+						}
+						break;
+					case 2:
+						cout << "Type 1 to find non-functioning pipes" << endl << "Type 2 to find functioning pipes" << endl;
+						switch (error_check())
+						{
+						case 1:
+							cout << "Are pipes working? (If they are - type 2 else type 1): ";
+							workings = work_check();
+							pipe_functioning_filter(1);
+							for (int i = 0; i < pipefilter.size(); i++) {
+								pipemap[pipefilter[i]].working = workings;
+							}
+							break;
+						case 2:
+							cout << "Are pipes working? (If they are - type 2 else type 1): ";
+							workings = work_check();
+							pipe_functioning_filter(2);
+							for (int i = 0; i < pipefilter.size(); i++) {
+								pipemap[pipefilter[i]].working = workings;
+							}
+							break;
+						default:
+							cout << endl << "Enter a valid command id" << endl;
+							break;
+						}
+						break;
+					default:
+						cout << endl << "Command does not exist" << endl;
+						break;
+					}
+					break;
+				case 4:
+					pipe_redact_switch = false;
+					break;
+				default:
+					cout << endl << "Enter a valid command id" << endl;
+					break;
 				}
 				break;
+
 			case 2:
-				cout << "Input id of the pipe: " << endl;
-				{int pipe_del_id = error_check();
-				pipemap.erase(pipe_del_id); }
+				cout << "1. Delete 1 pipe   2. Delete all pipes   3. Delete pipes on filter-basis   4. Stop deleting" << endl;
+				switch (error_check())
+				{
+				case 1:
+					cout << "Input index of a pipe: ";
+					workings = error_check();
+					deleted_pipes.push_back(workings);
+					pipemap.erase(workings);
+					break;
+				case 2:
+					for (int i = 1; i <= Pipe_id; i++) {
+						deleted_pipes.push_back(i);
+						pipemap.erase(i);
+					}
+					break;
+				case 3:
+					cout << "Type 1 to delete pipes on a name-basis" << endl;
+					cout << "Type 2 to delete pipes on a functionong-basis" << endl;
+					switch (error_check())
+					{
+					case 1:
+						pipe_name_filter();
+						for (int i = 0; i < pipefilter.size(); i++) {
+							deleted_pipes.push_back(pipefilter[i]);
+							pipemap.erase(pipefilter[i]);
+						}
+						break;
+					case 2:
+						cout << "Type 1 to find non-functioning pipes" << endl << "Type 2 to find functioning pipes" << endl;
+						switch (error_check())
+						{
+						case 1:
+							pipe_functioning_filter(1);
+							for (int i = 0; i < pipefilter.size(); i++) {
+								deleted_pipes.push_back(pipefilter[i]);
+								pipemap.erase(pipefilter[i]);
+							}
+							break;
+						case 2:
+							pipe_functioning_filter(2);
+							for (int i = 0; i < pipefilter.size(); i++) {
+								deleted_pipes.push_back(pipefilter[i]);
+								pipemap.erase(pipefilter[i]);
+							}
+							break;
+						default:
+							cout << endl << "Enter a valid command id" << endl;
+							break;
+						}
+						break;
+					default:
+						cout << endl << "Command does not exist" << endl;
+						break;
+					}
+					break;
+				case 4:
+					pipe_redact_switch = false;
+					break;
+				default:
+					cout << endl << "Enter a valid command id" << endl;
+					break;
+				}
 				break;
 			case 3:
 				pipe_edit_switch = false;
@@ -93,15 +280,19 @@ public:
 		if (Pipe_id > 0)
 		{
 			bool pipe_looking_switch = true;
+			bool functioning_pipe_looking_switch = true;
 			while (pipe_looking_switch)
 			{
-				bool functioning_pipe_looking_switch = true;
 				cout << "Type 1 to find pipes on a name-basis" << endl;
 				cout << "Type 2 to find pipes on a functionong-basis" << endl;
 				cout << "Type 3 to stop looking for pipes" << endl;
 				switch (error_check())
 				{
 				case 1:
+					pipe_name_filter();
+					for (int i = 0; i < pipefilter.size(); i++) {
+						show_pipe(pipefilter[i]);
+					}
 					break;
 				case 2:
 					while (functioning_pipe_looking_switch)
@@ -110,16 +301,15 @@ public:
 						switch (error_check())
 						{
 						case 1:
-							for (int i = 1; i <= Pipe_id; i++)
-							{
-								if (pipemap[i].working == 1)
-								{
-									cout << "Pipe " << i << endl;
-									cout << "  Pipe name: " << pipemap[i].pipe_name << endl;
-									cout << "  Pipe length: " << pipemap[i].length << endl;
-									cout << "  Pipe diameter" << pipemap[i].diameter << endl;
-									cout << "  Pipe is not working" << endl;
-								}
+							pipe_functioning_filter(1);
+							for (int i = 0; i < pipefilter.size(); i++) {
+								show_pipe(pipefilter[i]);
+							}
+							break;
+						case 2:
+							pipe_functioning_filter(2);
+							for (int i = 0; i < pipefilter.size(); i++) {
+								show_pipe(pipefilter[i]);
 							}
 							break;
 						case 3:
@@ -171,11 +361,21 @@ private:
 
 public:
 	string name = "";
-	int department_amount = 0;
-	int functioning_department_amount = 0;
+	float department_amount = 0;
+	float functioning_department_amount = 0;
 	float station_efficiency = 0;
 	int CS_id = 0;
-	map<int, Compressor_Station> CSmap;
+	float non_functioning_department_percent = 0;
+	unordered_map<int, Compressor_Station> CSmap;
+
+	void show_CS(int CS_index) {
+		cout << "Compressor Station " << CS_index << endl;
+		cout << "  CS name: " << CSmap[CS_index].name << endl;
+		cout << "  Amount of departments: " << CSmap[CS_index].department_amount << endl;
+		cout << "  Amount of functioning departments: " << CSmap[CS_index].functioning_department_amount << endl;
+		cout << "  " << CSmap[CS_index].non_functioning_department_percent << "% of departments are not functioning" << endl;
+		cout << "  CS efficiency: " << CSmap[CS_index].station_efficiency << endl;
+	}
 
 	void CS_adding(Compressor_Station& CS1)
 	{
@@ -188,6 +388,8 @@ public:
 		CS1.department_amount = value_check();
 		cout << "Amount of functioning departments: ";
 		CS1.functioning_department_amount = comparasion(CS1.department_amount);
+		CS1.non_functioning_department_percent = round((1.00 - CS1.functioning_department_amount / CS1.department_amount)*100);
+		cout << CS1.non_functioning_department_percent << "%" << " of departments are not functioning" << endl;
 		cout << "CS efficiency: ";
 		CS1.station_efficiency = value_check();
 		cout << endl;
@@ -206,6 +408,8 @@ public:
 				if (CS_id > 0) {
 					cout << "Amount of functioning departments: ";
 					CS1.functioning_department_amount = comparasion(CS1.department_amount);
+					CS1.non_functioning_department_percent = round((1.00 - CS1.functioning_department_amount / CS1.department_amount) * 100);
+					cout << CS1.non_functioning_department_percent << "%" << " of departments are not functioning" << endl;
 				}
 				else {
 					cout << "Compressor station does not exist " << endl;
@@ -224,6 +428,58 @@ public:
 				break;
 			}
 		}
+	}
+
+	void find_CS(Compressor_Station& CS1)
+	{
+		string input_name;
+		if (CS_id > 0)
+		{
+			float left_limit, right_limit;
+			bool pipe_looking_switch = true;
+			while (pipe_looking_switch)
+			{
+				bool functioning_pipe_looking_switch = true;
+				cout << "Type 1 to find CS's on a name-basis" << endl;
+				cout << "Type 2 to find CS's on a functionong-departemnts-basis" << endl;
+				cout << "Type 3 to stop looking for CS's" << endl;
+				switch (error_check())
+				{
+				case 1:
+					cout << "Input name: ";
+					cin >> input_name;
+					for (int i = 1; i <= CS_id; i++) {
+						if (CSmap[i].name.substr(0, size(input_name)) == input_name) {
+							show_CS(i);
+						}
+					}
+					break;
+				case 2:
+					cout << "Input minimal percent: ";
+					left_limit = value_check();
+					cout << "Input maximal percent: ";
+					right_limit = value_check();
+					for (int i = 1; i <= CS_id; i++) {
+						if ((CSmap[i].non_functioning_department_percent >= left_limit) && (CSmap[i].non_functioning_department_percent <= right_limit)) {
+							show_CS(i);
+						}
+					}
+					cout << endl;
+					break;
+				case 3:
+					pipe_looking_switch = false;
+					break;
+				default:
+					cout << endl << "Enter a valid command id" << endl;
+					break;
+				}
+			}
+		}
+		else
+		{
+			cout << "Pipes do not exist " << endl;
+		}
+
 	}
 
 };
@@ -288,7 +544,7 @@ float comparasion(float bigger_value)
 
 int menu()
 {
-	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load\n8.Look for a pipe   9. Exit" << endl;
+	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load\n8.Look for a pipe   9. Look for CS   10. Exit" << endl;
 	return error_check();
 }
 
@@ -299,53 +555,14 @@ int menu()
 void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 {
 	cout << endl;
-	if (pipe1.Pipe_id > 0)
-	{
-		for (int i = 1; i <= pipe1.Pipe_id; i++)
-		{	
-			auto it = pipe1.pipemap.find(i);
-			if (it != pipe1.pipemap.end()) {
-				cout << "Pipe " << i << ":" << endl;
-				cout << "  Pipe name: " << pipe1.pipe_name << endl;
-				cout << "  Pipe length: " << it->second.length << endl;
-				cout << "  Pipe diameter: " << it->second.diameter << endl;
-				if (it->second.working == 2)
-				{
-					cout << "  Pipe is working" << endl;
-				}
-				else
-				{
-					cout << "  Pipe is not working" << endl;
-				}
-			}
-		}
-		cout << endl;
-	}
-	else
-	{
-		cout <<"Pipes do not exist"<< endl;
+	for (int i = 1; i <= pipe1.Pipe_id; i++) {
+		pipe1.show_pipe(i);
 	}
 	cout << endl;
 
 
-	if (CS1.CS_id > 0)
-	{
-		for (int i = 1; i <= CS1.CS_id; i++)
-		{
-			auto it = CS1.CSmap.find(i);
-			if (it != CS1.CSmap.end()) {
-				cout << "Compressor Station " << i << ":" << endl;
-				cout << "  CS name: " << it->second.name << endl;
-				cout << "  Amount of deparments: " << it->second.department_amount << endl;
-				cout << "  Amount of functioning deparments: " << it->second.functioning_department_amount << endl;
-				cout << "  CS efficiency: " << it->second.station_efficiency << endl;
-			}
-		}
-		cout << endl;
-	}
-	else
-	{
-		cout << "Compressor Stations does not exist" << endl;
+	for (int i = 1; i <= CS1.CS_id; i++) {
+		CS1.show_CS(i);
 	}
 
 	cout << endl;
@@ -426,6 +643,9 @@ int main()
 			pipe.find_pipe(pipe);
 			break;
 		case 9:
+			CS.find_CS(CS);
+			break;
+		case 10:
 			keep_running = false;
 			break;
 		default:
