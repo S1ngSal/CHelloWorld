@@ -11,22 +11,6 @@ int error_check();
 float work_check();
 float comparasion(float bigger_value);
 
-/*class MyClass
-{
-public:
-	map<int, int> MyClass_map;
-	pair<int, int> MyClass_pair;
-	int a = 1;
-	float one()
-	{
-		cout << "1234" << endl;
-		MyClass_map = make_pair(1, 2);
-		return value_check();
-	}
-
-};*/
-
-
 
 class Pipestruct
 {
@@ -46,6 +30,7 @@ public:
 		for (int i = 0; i < deleted_pipes.size(); i++) {
 			if (pipe_index == deleted_pipes[i]) {
 				count++;
+				break;
 			}
 		}
 		if (count == 0) {
@@ -149,8 +134,8 @@ public:
 					}
 					break;
 				case 3:
-					cout << "Type 1 to redact pipes on a name-basis" << endl;
-					cout << "Type 2 to redact pipes on a functionong-basis" << endl;
+					cout << "1. Redact pipes on a name-basis" << endl;
+					cout << "2. Redact pipes on a functionong-basis" << endl;
 					switch (error_check())
 					{
 					case 1:
@@ -207,8 +192,14 @@ public:
 				case 1:
 					cout << "Input index of a pipe: ";
 					workings = error_check();
-					deleted_pipes.push_back(workings);
-					pipemap.erase(workings);
+					if (pipemap[workings].length != 0) {
+						deleted_pipes.push_back(workings);
+						pipemap.erase(workings);
+					}
+					else
+					{
+						cout << "Pipe does not exist" << endl;
+					}
 					break;
 				case 2:
 					for (int i = 1; i <= Pipe_id; i++) {
@@ -298,8 +289,7 @@ public:
 					while (functioning_pipe_looking_switch)
 					{
 						cout << "Type 1 to find non-functioning pipes" << endl << "Type 2 to find functioning pipes" << endl << "Type 3 to stop looking for pipes on functioning-basis" << endl;
-						switch (error_check())
-						{
+						switch (error_check()){
 						case 1:
 							pipe_functioning_filter(1);
 							for (int i = 0; i < pipefilter.size(); i++) {
@@ -339,22 +329,6 @@ public:
 
 };
 
-//struct TestStruct
-//{
-//	float a;
-//	float b;
-//	float c;
-//};
-
-//typedef struct struct1 {
-//	int a;
-//	int b;
-//	float c;
-//	float d;
-//} my_struct_t;
-
-//std::map< float, my_struct_t > my_struct_map;
-
 class Compressor_Station
 {
 private:
@@ -367,14 +341,65 @@ public:
 	int CS_id = 0;
 	float non_functioning_department_percent = 0;
 	unordered_map<int, Compressor_Station> CSmap;
+	vector<int> CSfilter;
+	vector<int> deleted_CS;
+
+	void CS_name_filter() {
+		string input_name;
+		CSfilter.clear();
+		cout << "Input name: ";
+		cin >> input_name;
+		for (int i = 1; i <= CS_id; i++) {
+			if (CSmap[i].name.substr(0, size(input_name)) == input_name) {
+				CSfilter.push_back(i);
+			}
+		}
+	}
+
+	void CS_percent_filter() {
+		float left_limit, right_limit;
+		CSfilter.clear();
+		cout << "Input minimal percent: ";
+		left_limit = value_check();
+		cout << "Input maximal percent: ";
+		right_limit = value_check();
+		for (int i = 1; i <= CS_id; i++) {
+			if ((CSmap[i].non_functioning_department_percent >= left_limit) && (CSmap[i].non_functioning_department_percent <= right_limit)) {
+				CSfilter.push_back(i);
+			}
+		}
+	}
 
 	void show_CS(int CS_index) {
-		cout << "Compressor Station " << CS_index << endl;
-		cout << "  CS name: " << CSmap[CS_index].name << endl;
-		cout << "  Amount of departments: " << CSmap[CS_index].department_amount << endl;
-		cout << "  Amount of functioning departments: " << CSmap[CS_index].functioning_department_amount << endl;
-		cout << "  " << CSmap[CS_index].non_functioning_department_percent << "% of departments are not functioning" << endl;
-		cout << "  CS efficiency: " << CSmap[CS_index].station_efficiency << endl;
+		int count = 0;
+
+		for (int i = 0; i < deleted_CS.size(); i++) {
+			if (CS_index == deleted_CS[i]) {
+				count++;
+				break;
+			}
+		}
+
+		if (count== 0) {
+			cout << "Compressor Station " << CS_index << endl;
+			cout << "  CS name: " << CSmap[CS_index].name << endl;
+			cout << "  Amount of departments: " << CSmap[CS_index].department_amount << endl;
+			cout << "  Amount of functioning departments: " << CSmap[CS_index].functioning_department_amount << endl;
+			cout << "  " << CSmap[CS_index].non_functioning_department_percent << "% of departments are not functioning" << endl;
+			cout << "  CS efficiency: " << CSmap[CS_index].station_efficiency << endl;
+		}
+		else
+		{
+			cout << "Compressor Station " << CS_index << " does not exist";
+		}
+		
+	}
+
+	void redact_CS(int CS_index) {
+		show_CS(CS_index);
+		cout << endl << "Input amount of functioning departments: ";
+		CSmap[CS_index].functioning_department_amount = comparasion(CSmap[CS_index].department_amount);
+		cout << endl;
 	}
 
 	void CS_adding(Compressor_Station& CS1)
@@ -398,10 +423,121 @@ public:
 
 	void edit_CS(Compressor_Station& CS1)
 	{
+		int CS_redacting_ID;
+		float left_limit, rigth_limit;
 		bool edit_CS_switch = true;
 		while (edit_CS_switch)
 		{
-			cout << "Type 1 to edit CS's" << endl << "Type 2 to delete a CS" << endl << "Type 3 to stop editing" << endl;
+			bool redact_CS_switch = true;
+			cout << "Type 1 to redact CS's" << endl << "Type 2 to delete CS's" << endl << "Type 3 to stop editing" << endl;
+			switch (error_check())
+			{
+			case 1:
+				while (redact_CS_switch) {
+					cout << "1. Redact 1 CS   2. Redact all CS's   3. Redact CS's on a filter-basis   4. Stop redacting" << endl;
+					switch (error_check())
+					{
+					case 1:
+						cout << "Input id of the CS: ";
+						redact_CS(error_check());
+						break;
+					case 2:
+						for (int i = 1; i <= CS_id; i++) {
+							redact_CS(i);
+						}
+						break;
+					case 3:
+						cout << "1. Redact CS's on a name-basis   2. Redact CS's on functioning-department-basis" << endl;
+							switch (error_check())
+							{
+							case 1:
+								CS_name_filter();
+								for (int i = 0; i < CSfilter.size(); i++) {
+									redact_CS(CSfilter[i]);
+								}
+								break;
+							case 2:
+								CS_percent_filter();
+								for (int i = 0; i < CSfilter.size(); i++) {
+									redact_CS(CSfilter[i]);
+								}
+								break;
+							default:
+								cout << endl << "Enter a valid command id" << endl;
+								break;
+							}
+						break;
+					case 4:
+						redact_CS_switch = false;
+						break;
+					default:
+						cout << endl << "Enter a valid command id" << endl;
+						break;
+					}
+				}
+				break;
+			case 2:
+				cout << "1. Delete 1 CS   2. Delete all CS's   3. Delete CS on filter-basis";
+				switch (error_check())
+				{
+				case 1:
+					cout << "Input ID of the CS" << endl;
+					CS_redacting_ID = error_check();
+					if (CSmap[CS_redacting_ID].department_amount != 0) {
+						deleted_CS.push_back(CS_redacting_ID);
+						CSmap.erase(CS_redacting_ID);
+					}
+					else
+					{
+						cout << "Compressor Station does not exist" << endl;
+					}
+					break;
+				case 2:
+					for (int i = 1; i <= CS_id; i++) {
+						deleted_CS.push_back(i);
+						CSmap.erase(i);
+					}
+					break;
+				case 3:
+					cout << "1. Delete CS on a name-basis   2. Delete CS on functioning-percentage-basis" << endl;
+					switch (error_check())
+					{
+					case 1:
+						CS_name_filter();
+						for (int i = 0; i < CSfilter.size(); i++) {
+							deleted_CS.push_back(CSfilter[i]);
+							CSmap.erase(CSfilter[i]);
+						}
+						break;
+					case 2:
+						CS_percent_filter();
+						for (int i = 0; i < CSfilter.size(); i++) {
+							deleted_CS.push_back(CSfilter[i]);
+							CSmap.erase(CSfilter[i]);
+						}
+						break;
+					default:
+						cout << "Input a valid command ID" << endl;
+						break;
+					}
+					break;
+				default:
+					cout << "Input a valid command ID" << endl;
+					break;
+				}
+				break;
+			case 3:
+				edit_CS_switch = false;
+				break;
+			default:
+				cout << endl << "Enter a valid command id" << endl;
+				break;
+			}
+		}
+		
+	/*	while (redact_CS_switch)
+		{
+			cout << "Type 1 to redact CS's" << endl << "Type 2 to delete a CS" << endl << "Type 3 to stop editing" << endl;
 			switch (error_check())
 			{
 			case 1:
@@ -421,13 +557,13 @@ public:
 				CSmap.erase(CS_del_id); }
 				break;
 			case 3:
-				edit_CS_switch = false;
+				redact_CS_switch = false;
 				break;
 			default:
 				cout << endl << "Enter a valid command id" << endl;
 				break;
 			}
-		}
+		}*/
 	}
 
 	void find_CS(Compressor_Station& CS1)
@@ -446,23 +582,15 @@ public:
 				switch (error_check())
 				{
 				case 1:
-					cout << "Input name: ";
-					cin >> input_name;
-					for (int i = 1; i <= CS_id; i++) {
-						if (CSmap[i].name.substr(0, size(input_name)) == input_name) {
-							show_CS(i);
-						}
+					CS_name_filter();
+					for (int i = 0; i < CSfilter.size(); i++) {
+						show_CS(CSfilter[i]);
 					}
 					break;
 				case 2:
-					cout << "Input minimal percent: ";
-					left_limit = value_check();
-					cout << "Input maximal percent: ";
-					right_limit = value_check();
-					for (int i = 1; i <= CS_id; i++) {
-						if ((CSmap[i].non_functioning_department_percent >= left_limit) && (CSmap[i].non_functioning_department_percent <= right_limit)) {
-							show_CS(i);
-						}
+					CS_percent_filter();
+					for (int i = 0; i < CSfilter.size(); i++) {
+						show_CS(CSfilter[i]);
 					}
 					cout << endl;
 					break;
@@ -603,14 +731,6 @@ void load_data(Pipestruct& pipe1, Compressor_Station& CS1)
 
 int main()
 {	
-//	my_struct_t st = { 1, 2, 3.0, 4.0 };
-//	std::pair< float, my_struct_t > p = std::make_pair(st.c, st);
-//	my_struct_map.insert(p);
-//	st = {5, 6, 7.0, 8.0};
-//	p = make_pair(1, st);
-//	my_struct_map.insert(p);
-//	MyClass q;
-//	q.one();
 	Pipestruct pipe;
 	Compressor_Station CS;
 	bool keep_running = true;
