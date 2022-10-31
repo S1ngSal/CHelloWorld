@@ -401,3 +401,4 @@ FodyWeavers.xsd
 *.sln
 *.vcxproj
 *.vcxproj.filters
+armclost/.idea/workspace.xml
