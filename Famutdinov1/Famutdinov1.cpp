@@ -712,20 +712,7 @@ void save_data(Pipestruct& pipe1, Compressor_Station& CS1) {
 
 	saving_file.close();
 }
-/*void save_data(Pipestruct& pipe1, Compressor_Station& CS1)
-{
-	ofstream out;          
-	out.open("pipeline.txt");
-	if (out.is_open())
-	{
-		out << pipe1.length << endl << pipe1.diameter << endl << pipe1.working << endl << endl << CS1.name << endl << CS1.department_amount << endl << CS1.functioning_department_amount << endl << CS1.station_efficiency;
-		cout << "Data has been saved." << endl;
-	}
-	else
-	{
-		cout << "Can not open file." << endl;
-	}
-}
+/*
 
 void load_data(Pipestruct& pipe1, Compressor_Station& CS1)
 {
