@@ -3,37 +3,59 @@
 #include <fstream>
 #include <unordered_map>
 #include <vector>
+#include <fstream>
 
 using namespace std;
-
+class Pipestruct;
+class Compressor_Station;
 float value_check();
 int error_check();
 float work_check();
 float comparasion(float bigger_value);
 
-
 class Pipestruct
 {
 private:
+	int Pipe_id = 0;
+	
+	
 public:
 	string pipe_name = "";
 	float length = 0;
 	float diameter = 0;
 	int working = 1;
-	int Pipe_id = 0;
-	unordered_map<int, Pipestruct> pipemap;
 	vector<int> pipefilter;
-	vector<int> deleted_pipes;
+	unordered_map<int, Pipestruct> pipemap;
+	
+	
 
-	void show_pipe(int pipe_index) {
-		int count = 0;
-		for (int i = 0; i < deleted_pipes.size(); i++) {
-			if (pipe_index == deleted_pipes[i]) {
-				count++;
-				break;
+	void save_pipe(Pipestruct& pipe1) {
+		string file_name;
+		cout << "Input file name (without '.txt'): ";
+		cin >> file_name;
+		file_name = file_name + ".txt";
+		ofstream saving_file;
+		saving_file.open(file_name);
+
+		if (saving_file.is_open()) {
+			saving_file << pipe1.pipemap.size() << endl;
+			for (int i = 1; i <= pipe1.pipemap.size()-1; i++) {
+				saving_file << pipe1.pipemap[i].pipe_name << endl;
+				saving_file << pipe1.pipemap[i].length << endl;
+				saving_file << pipe1.pipemap[i].diameter << endl;
+				saving_file << pipe1.pipemap[i].working << endl;
 			}
 		}
-		if (count == 0) {
+		else {
+			cout << endl << "Can not open file! ";
+		}
+
+		saving_file.close();
+	}
+
+	void show_pipe(int pipe_index) {
+		
+		if (pipemap[pipe_index].length != 0) {
 			cout << "Pipe " << pipe_index << endl;
 			cout << "  Pipe name: " << pipemap[pipe_index].pipe_name << endl;
 			cout << "  Pipe length: " << pipemap[pipe_index].length << endl;
@@ -45,11 +67,6 @@ public:
 				cout << "  Pipe is working" << endl;
 			}
 		}
-		else
-		{
-			cout << "Pipe "<< pipe_index <<" do not exist" << endl;
-		}
-		
 		
 	}
 
@@ -193,7 +210,6 @@ public:
 					cout << "Input index of a pipe: ";
 					workings = error_check();
 					if (pipemap[workings].length != 0) {
-						deleted_pipes.push_back(workings);
 						pipemap.erase(workings);
 					}
 					else
@@ -203,7 +219,6 @@ public:
 					break;
 				case 2:
 					for (int i = 1; i <= Pipe_id; i++) {
-						deleted_pipes.push_back(i);
 						pipemap.erase(i);
 					}
 					break;
@@ -215,7 +230,6 @@ public:
 					case 1:
 						pipe_name_filter();
 						for (int i = 0; i < pipefilter.size(); i++) {
-							deleted_pipes.push_back(pipefilter[i]);
 							pipemap.erase(pipefilter[i]);
 						}
 						break;
@@ -226,14 +240,12 @@ public:
 						case 1:
 							pipe_functioning_filter(1);
 							for (int i = 0; i < pipefilter.size(); i++) {
-								deleted_pipes.push_back(pipefilter[i]);
 								pipemap.erase(pipefilter[i]);
 							}
 							break;
 						case 2:
 							pipe_functioning_filter(2);
 							for (int i = 0; i < pipefilter.size(); i++) {
-								deleted_pipes.push_back(pipefilter[i]);
 								pipemap.erase(pipefilter[i]);
 							}
 							break;
@@ -332,17 +344,18 @@ public:
 class Compressor_Station
 {
 private:
+	
+	int CS_id = 0;
 
 public:
 	string name = "";
 	float department_amount = 0;
 	float functioning_department_amount = 0;
 	float station_efficiency = 0;
-	int CS_id = 0;
 	float non_functioning_department_percent = 0;
-	unordered_map<int, Compressor_Station> CSmap;
 	vector<int> CSfilter;
-	vector<int> deleted_CS;
+	unordered_map<int, Compressor_Station> CSmap;
+	
 
 	void CS_name_filter() {
 		string input_name;
@@ -371,26 +384,13 @@ public:
 	}
 
 	void show_CS(int CS_index) {
-		int count = 0;
-
-		for (int i = 0; i < deleted_CS.size(); i++) {
-			if (CS_index == deleted_CS[i]) {
-				count++;
-				break;
-			}
-		}
-
-		if (count== 0) {
+		if (CSmap[CS_index].department_amount != 0) {
 			cout << "Compressor Station " << CS_index << endl;
 			cout << "  CS name: " << CSmap[CS_index].name << endl;
 			cout << "  Amount of departments: " << CSmap[CS_index].department_amount << endl;
 			cout << "  Amount of functioning departments: " << CSmap[CS_index].functioning_department_amount << endl;
 			cout << "  " << CSmap[CS_index].non_functioning_department_percent << "% of departments are not functioning" << endl;
 			cout << "  CS efficiency: " << CSmap[CS_index].station_efficiency << endl;
-		}
-		else
-		{
-			cout << "Compressor Station " << CS_index << " does not exist";
 		}
 		
 	}
@@ -484,7 +484,6 @@ public:
 					cout << "Input ID of the CS" << endl;
 					CS_redacting_ID = error_check();
 					if (CSmap[CS_redacting_ID].department_amount != 0) {
-						deleted_CS.push_back(CS_redacting_ID);
 						CSmap.erase(CS_redacting_ID);
 					}
 					else
@@ -494,7 +493,6 @@ public:
 					break;
 				case 2:
 					for (int i = 1; i <= CS_id; i++) {
-						deleted_CS.push_back(i);
 						CSmap.erase(i);
 					}
 					break;
@@ -505,14 +503,12 @@ public:
 					case 1:
 						CS_name_filter();
 						for (int i = 0; i < CSfilter.size(); i++) {
-							deleted_CS.push_back(CSfilter[i]);
 							CSmap.erase(CSfilter[i]);
 						}
 						break;
 					case 2:
 						CS_percent_filter();
 						for (int i = 0; i < CSfilter.size(); i++) {
-							deleted_CS.push_back(CSfilter[i]);
 							CSmap.erase(CSfilter[i]);
 						}
 						break;
@@ -534,36 +530,6 @@ public:
 				break;
 			}
 		}
-		
-	/*	while (redact_CS_switch)
-		{
-			cout << "Type 1 to redact CS's" << endl << "Type 2 to delete a CS" << endl << "Type 3 to stop editing" << endl;
-			switch (error_check())
-			{
-			case 1:
-				if (CS_id > 0) {
-					cout << "Amount of functioning departments: ";
-					CS1.functioning_department_amount = comparasion(CS1.department_amount);
-					CS1.non_functioning_department_percent = round((1.00 - CS1.functioning_department_amount / CS1.department_amount) * 100);
-					cout << CS1.non_functioning_department_percent << "%" << " of departments are not functioning" << endl;
-				}
-				else {
-					cout << "Compressor station does not exist " << endl;
-				}
-				break;
-			case 2:
-				cout << "Input id of the CS: " << endl;
-				{int CS_del_id = error_check();
-				CSmap.erase(CS_del_id); }
-				break;
-			case 3:
-				redact_CS_switch = false;
-				break;
-			default:
-				cout << endl << "Enter a valid command id" << endl;
-				break;
-			}
-		}*/
 	}
 
 	void find_CS(Compressor_Station& CS1)
@@ -611,7 +577,6 @@ public:
 	}
 
 };
-
 
 float value_check()
 {
@@ -683,13 +648,13 @@ int menu()
 void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 {
 	cout << endl;
-	for (int i = 1; i <= pipe1.Pipe_id; i++) {
+	for (int i = 1; i <= pipe1.pipemap.size(); i++) {
 		pipe1.show_pipe(i);
 	}
 	cout << endl;
 
 
-	for (int i = 1; i <= CS1.CS_id; i++) {
+	for (int i = 1; i <= CS1.CSmap.size(); i++) {
 		CS1.show_CS(i);
 	}
 
@@ -697,6 +662,56 @@ void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 }
 
 
+void save_data(Pipestruct& pipe1, Compressor_Station& CS1) {
+	string file_name;
+	cout << "Input file name (without '.txt'): ";
+	cin >> file_name;
+	file_name = file_name + ".txt";
+	ofstream saving_file;
+	saving_file.open(file_name);
+	int pipes_deleated, CS_deleated;
+	pipes_deleated = 0;
+	CS_deleated = 0;
+
+	for (int i = 1; i <= pipe1.pipemap.size(); i++) {
+		if (pipe1.pipemap[i].length == 0) {
+			pipes_deleated++;
+		}
+	}
+
+	for (int i = 1; i <= CS1.CSmap.size(); i++) {
+		if (CS1.CSmap[i].department_amount == 0) {
+			CS_deleated++;
+		}
+	}
+
+	if (saving_file.is_open()) {
+		saving_file << pipe1.pipemap.size() << endl;
+		for (int i = 1; i <= pipe1.pipemap.size()-pipes_deleated; i++) {
+			if (pipe1.pipemap[i].length > 0) {
+				saving_file << pipe1.pipemap[i].pipe_name << endl;
+				saving_file << pipe1.pipemap[i].length << endl;
+				saving_file << pipe1.pipemap[i].diameter << endl;
+				saving_file << pipe1.pipemap[i].working << endl;
+			}
+		}
+		saving_file << (CS1.CSmap.size() - CS_deleated) << endl;
+		for (int i = 1; i <= CS1.CSmap.size() - CS_deleated; i++) {
+			if (CS1.CSmap[i].department_amount > 0) {
+				saving_file << CS1.CSmap[i].name << endl;
+				saving_file << CS1.CSmap[i].department_amount << endl;
+				saving_file << CS1.CSmap[i].functioning_department_amount << endl;
+				saving_file << CS1.CSmap[i].station_efficiency << endl;
+				saving_file << CS1.CSmap[i].non_functioning_department_percent << endl;
+			}
+		}
+	}
+	else {
+		cout << endl << "Can not open file! ";
+	}
+
+	saving_file.close();
+}
 /*void save_data(Pipestruct& pipe1, Compressor_Station& CS1)
 {
 	ofstream out;          
@@ -753,9 +768,9 @@ int main()
 		case 5:
 			CS.edit_CS(CS);
 			break;
-	//	case 6:
-	//		save_data(pipe, CS);
-	//		break;
+		case 6:
+			save_data(pipe, CS);
+			break;
 	//	case 7:
 	//		load_data(pipe, CS);
 	//		break;
