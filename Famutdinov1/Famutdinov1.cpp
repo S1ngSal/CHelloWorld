@@ -12,6 +12,7 @@ float value_check();
 int error_check();
 float work_check();
 float comparasion(float bigger_value);
+string file_name_input();
 
 class Pipestruct
 {
@@ -29,21 +30,27 @@ public:
 	
 	
 
-	void save_pipe(Pipestruct& pipe1) {
-		string file_name;
-		cout << "Input file name (without '.txt'): ";
-		cin >> file_name;
-		file_name = file_name + ".txt";
+	void save_pipe(Pipestruct& pipe1, string file_name) {
 		ofstream saving_file;
 		saving_file.open(file_name);
+		int pipes_deleated;
+		pipes_deleated = 0;
+
+		for (int i = 1; i <= pipe1.pipemap.size(); i++) {
+			if (pipe1.pipemap[i].length == 0) {
+				pipes_deleated++;
+			}
+		}
 
 		if (saving_file.is_open()) {
 			saving_file << pipe1.pipemap.size() << endl;
-			for (int i = 1; i <= pipe1.pipemap.size()-1; i++) {
-				saving_file << pipe1.pipemap[i].pipe_name << endl;
-				saving_file << pipe1.pipemap[i].length << endl;
-				saving_file << pipe1.pipemap[i].diameter << endl;
-				saving_file << pipe1.pipemap[i].working << endl;
+			for (int i = 1; i <= pipe1.pipemap.size() - pipes_deleated; i++) {
+				if (pipe1.pipemap[i].length > 0) {
+					saving_file << pipe1.pipemap[i].pipe_name << endl;
+					saving_file << pipe1.pipemap[i].length << endl;
+					saving_file << pipe1.pipemap[i].diameter << endl;
+					saving_file << pipe1.pipemap[i].working << endl;
+				}
 			}
 		}
 		else {
@@ -51,6 +58,29 @@ public:
 		}
 
 		saving_file.close();
+
+	}
+
+	void load_pipe(Pipestruct& pipe1, string file_name) {
+		ifstream loading_file;
+		loading_file.open(file_name);
+		int pipe_amount;
+		if (loading_file.is_open()) {
+			loading_file >> pipe_amount;
+			if (pipe_amount != 0) {
+				for (int i = 1; i <= pipe_amount * 4; i++) {
+					pipe1.pipemap[i].Pipe_id = i;
+					loading_file >> pipe1.pipemap[i].pipe_name;
+					loading_file >> pipe1.pipemap[i].length;
+					loading_file >> pipe1.pipemap[i].diameter;
+					loading_file >> pipe1.pipemap[i].working;
+				}
+			}	
+			loading_file.close();
+		}
+		else {
+			cout << endl << "Can not open file! ";
+		}
 	}
 
 	void show_pipe(int pipe_index) {
@@ -356,6 +386,60 @@ public:
 	vector<int> CSfilter;
 	unordered_map<int, Compressor_Station> CSmap;
 	
+	void save_CS(Compressor_Station& CS1, string file_name) {
+		ofstream saving_file;
+		saving_file.open(file_name, ofstream::app);
+		int CS_deleated;
+		CS_deleated = 0;
+
+
+		for (int i = 1; i <= CS1.CSmap.size(); i++) {
+			if (CS1.CSmap[i].department_amount == 0) {
+				CS_deleated++;
+			}
+		}
+
+		if (saving_file.is_open()) {
+			saving_file << (CS1.CSmap.size() - CS_deleated) << endl;
+			for (int i = 1; i <= CS1.CSmap.size() - CS_deleated; i++) {
+				if (CS1.CSmap[i].department_amount > 0) {
+					saving_file << CS1.CSmap[i].name << endl;
+					saving_file << CS1.CSmap[i].department_amount << endl;
+					saving_file << CS1.CSmap[i].functioning_department_amount << endl;
+					saving_file << CS1.CSmap[i].station_efficiency << endl;
+					saving_file << CS1.CSmap[i].non_functioning_department_percent << endl;
+				}
+			}
+		}
+		else {
+			cout << endl << "Can not open file! ";
+		}
+
+		saving_file.close();
+	}
+
+	/*void load_CS(Compressor_Station& CS1, string file_name) {
+		ifstream loading_file;
+		loading_file.open(file_name);
+		int pipe_amount, CS_amount;
+		if (loading_file.is_open()) {
+			loading_file >> pipe_amount;
+			if (pipe_amount != 0) {
+				for (int i = 1; i <= pipe_amount * 4; i++) {
+					CS1.CSmap[i].CS_id = i;
+					loading_file >> CS1.CSmap[i].name;
+					loading_file >> CS1.CSmap[i].department_amount;
+					loading_file >> CS1.CSmap[i].functioning_department_amount;
+					loading_file >> CS1.CSmap[i].station_efficiency;
+					loading_file >> CS1.CSmap[i].non_functioning_department_percent;
+				}
+			}
+			loading_file.close();
+		}
+		else {
+			cout << endl << "Can not open file! ";
+		}
+	}*/
 
 	void CS_name_filter() {
 		string input_name;
@@ -642,7 +726,14 @@ int menu()
 }
 
 
-
+string file_name_input()
+{
+	string file_name;
+	cout << "Input file name (without '.txt'): ";
+	cin >> file_name;
+	file_name = file_name + ".txt";
+	return file_name;
+}
 
 
 void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
@@ -662,77 +753,9 @@ void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 }
 
 
-void save_data(Pipestruct& pipe1, Compressor_Station& CS1) {
-	string file_name;
-	cout << "Input file name (without '.txt'): ";
-	cin >> file_name;
-	file_name = file_name + ".txt";
-	ofstream saving_file;
-	saving_file.open(file_name);
-	int pipes_deleated, CS_deleated;
-	pipes_deleated = 0;
-	CS_deleated = 0;
-
-	for (int i = 1; i <= pipe1.pipemap.size(); i++) {
-		if (pipe1.pipemap[i].length == 0) {
-			pipes_deleated++;
-		}
-	}
-
-	for (int i = 1; i <= CS1.CSmap.size(); i++) {
-		if (CS1.CSmap[i].department_amount == 0) {
-			CS_deleated++;
-		}
-	}
-
-	if (saving_file.is_open()) {
-		saving_file << pipe1.pipemap.size() << endl;
-		for (int i = 1; i <= pipe1.pipemap.size()-pipes_deleated; i++) {
-			if (pipe1.pipemap[i].length > 0) {
-				saving_file << pipe1.pipemap[i].pipe_name << endl;
-				saving_file << pipe1.pipemap[i].length << endl;
-				saving_file << pipe1.pipemap[i].diameter << endl;
-				saving_file << pipe1.pipemap[i].working << endl;
-			}
-		}
-		saving_file << (CS1.CSmap.size() - CS_deleated) << endl;
-		for (int i = 1; i <= CS1.CSmap.size() - CS_deleated; i++) {
-			if (CS1.CSmap[i].department_amount > 0) {
-				saving_file << CS1.CSmap[i].name << endl;
-				saving_file << CS1.CSmap[i].department_amount << endl;
-				saving_file << CS1.CSmap[i].functioning_department_amount << endl;
-				saving_file << CS1.CSmap[i].station_efficiency << endl;
-				saving_file << CS1.CSmap[i].non_functioning_department_percent << endl;
-			}
-		}
-	}
-	else {
-		cout << endl << "Can not open file! ";
-	}
-
-	saving_file.close();
-}
-/*
-
-void load_data(Pipestruct& pipe1, Compressor_Station& CS1)
-{
-	ifstream inp;
-	inp.open("pipeline.txt");
-	if (inp.is_open())
-	{
-		inp >> pipe1.length >> pipe1.diameter >> pipe1.working;
-		inp.ignore();
-		inp >> CS1.name >> CS1.department_amount >> CS1.functioning_department_amount >> CS1.station_efficiency;
-		cout << "Data has been loaded." << endl;
-	}
-	else
-	{
-		cout << "Can not open file." << endl;
-	}
-} */
-
 int main()
 {	
+	string file_name;
 	Pipestruct pipe;
 	Compressor_Station CS;
 	bool keep_running = true;
@@ -756,11 +779,14 @@ int main()
 			CS.edit_CS(CS);
 			break;
 		case 6:
-			save_data(pipe, CS);
+			file_name = file_name_input();
+			pipe.save_pipe(pipe, file_name);
+			CS.save_CS(CS, file_name);
 			break;
-	//	case 7:
-	//		load_data(pipe, CS);
-	//		break;
+		case 7:
+			file_name = file_name_input();
+			pipe.load_pipe(pipe, file_name);
+			break;
 		case 8:
 			pipe.find_pipe(pipe);
 			break;
