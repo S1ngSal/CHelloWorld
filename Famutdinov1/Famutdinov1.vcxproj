@@ -139,7 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Checks.cpp" />
+    <ClCompile Include="CS.cpp" />
     <ClCompile Include="Famutdinov1.cpp" />
+    <ClCompile Include="PIpe.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Checks.h" />
+    <ClInclude Include="CS.h" />
+    <ClInclude Include="Pipe.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
