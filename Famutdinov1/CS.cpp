@@ -65,6 +65,7 @@ void Compressor_Station::load_CS(Compressor_Station& CS1, string file_name) {
 			}
 		}
 		loading_file >> CS_amount;
+		CS_id = CS_amount;
 		if (CS_amount != 0) {
 			for (int i = 1; i <= (CS_amount * 5); i++) {
 				CS1.CSmap[i].CS_id = i;

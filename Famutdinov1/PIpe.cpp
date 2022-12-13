@@ -41,6 +41,7 @@ void Pipestruct::save_pipe(Pipestruct& pipe1, string file_name) {
 				saving_file << pipe1.pipemap[i].working << endl;
 			}
 		}
+		cout << "Data has been saved" << endl;
 	}
 	else {
 		cout << endl << "Can not open file! ";
@@ -56,6 +57,7 @@ void Pipestruct::load_pipe(Pipestruct& pipe1, string file_name) {
 	int pipe_amount;
 	if (loading_file.is_open()) {
 		loading_file >> pipe_amount;
+		Pipe_id = pipe_amount;
 		if (pipe_amount != 0) {
 			for (int i = 1; i <= pipe_amount * 4; i++) {
 				pipe1.pipemap[i].Pipe_id = i;
@@ -65,7 +67,7 @@ void Pipestruct::load_pipe(Pipestruct& pipe1, string file_name) {
 				loading_file >> pipe1.pipemap[i].working;
 			}
 		}
-
+		cout << "Data has been loaded" << endl;
 	}
 	else {
 		cout << endl << "Can not open file! ";
