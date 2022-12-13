@@ -76,7 +76,7 @@ public:
 					loading_file >> pipe1.pipemap[i].working;
 				}
 			}	
-			loading_file.close();
+			
 		}
 		else {
 			cout << endl << "Can not open file! ";
@@ -418,14 +418,21 @@ public:
 		saving_file.close();
 	}
 
-	/*void load_CS(Compressor_Station& CS1, string file_name) {
+	void load_CS(Compressor_Station& CS1, string file_name) {
 		ifstream loading_file;
+		string buffer;
 		loading_file.open(file_name);
 		int pipe_amount, CS_amount;
 		if (loading_file.is_open()) {
 			loading_file >> pipe_amount;
 			if (pipe_amount != 0) {
 				for (int i = 1; i <= pipe_amount * 4; i++) {
+					loading_file >> buffer;
+				}
+			}
+			loading_file >> CS_amount;
+			if (CS_amount != 0) {
+				for (int i = 1; i <= (CS_amount * 5); i++) {
 					CS1.CSmap[i].CS_id = i;
 					loading_file >> CS1.CSmap[i].name;
 					loading_file >> CS1.CSmap[i].department_amount;
@@ -439,7 +446,7 @@ public:
 		else {
 			cout << endl << "Can not open file! ";
 		}
-	}*/
+	}
 
 	void CS_name_filter() {
 		string input_name;
@@ -786,6 +793,7 @@ int main()
 		case 7:
 			file_name = file_name_input();
 			pipe.load_pipe(pipe, file_name);
+			CS.load_CS(CS, file_name);
 			break;
 		case 8:
 			pipe.find_pipe(pipe);
