@@ -67,7 +67,7 @@ void Compressor_Station::load_CS(Compressor_Station& CS1, string file_name) {
 		loading_file >> CS_amount;
 		CS_id = CS_amount;
 		if (CS_amount != 0) {
-			for (int i = 1; i <= (CS_amount * 5); i++) {
+			for (int i = 1; i <= CS_amount; i++) {
 				CS1.CSmap[i].CS_id = i;
 				loading_file >> CS1.CSmap[i].name;
 				loading_file >> CS1.CSmap[i].department_amount;
@@ -300,4 +300,14 @@ void Compressor_Station::find_CS(Compressor_Station& CS1)
 		cout << "Pipes do not exist " << endl;
 	}
 
+}
+
+ofstream& operator << (ofstream& fout, Compressor_Station& CS1) {
+	fout << CS1.name << endl << CS1.department_amount << endl << CS1.functioning_department_amount << endl << CS1.station_efficiency << endl<< CS1.non_functioning_department_percent;
+	return fout;
+}
+
+ifstream& operator >> (ifstream& fin, Compressor_Station& CS1) {
+	fin >> CS1.name >> CS1.department_amount >> CS1.functioning_department_amount >> CS1.station_efficiency >> CS1.non_functioning_department_percent;
+	return fin;
 }

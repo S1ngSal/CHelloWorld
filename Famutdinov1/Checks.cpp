@@ -28,3 +28,34 @@ int error_check()
 	}
 	return check_variable;
 }
+
+int menu()
+{
+	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load\n8.Look for a pipe   9. Look for CS   10. Exit" << endl;
+	return error_check();
+}
+
+string file_name_input()
+{
+	string file_name;
+	cout << "Input file name (without '.txt'): ";
+	cin >> file_name;
+	file_name = file_name + ".txt";
+	return file_name;
+}
+
+void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
+{
+	cout << endl;
+	for (int i = 1; i <= pipe1.pipemap.size(); i++) {
+		pipe1.show_pipe(i);
+	}
+	cout << endl;
+
+
+	for (int i = 1; i <= CS1.CSmap.size(); i++) {
+		CS1.show_CS(i);
+	}
+
+	cout << endl;
+}
