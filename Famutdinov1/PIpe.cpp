@@ -59,7 +59,7 @@ void Pipestruct::load_pipe(Pipestruct& pipe1, string file_name) {
 		loading_file >> pipe_amount;
 		Pipe_id = pipe_amount;
 		if (pipe_amount != 0) {
-			for (int i = 1; i <= pipe_amount * 4; i++) {
+			for (int i = 1; i <= pipe_amount; i++) {
 				pipe1.pipemap[i].Pipe_id = i;
 				loading_file >> pipe1.pipemap[i].pipe_name;
 				loading_file >> pipe1.pipemap[i].length;
@@ -106,7 +106,7 @@ void Pipestruct::pipe_name_filter() {
 
 void Pipestruct::pipe_functioning_filter(int x) {
 	pipefilter.clear();
-	for (int i = 1; i <= Pipe_id; i++)
+	for (int i = 0; i <= Pipe_id; i++)
 	{
 		if (pipemap[i].working == x)
 		{
@@ -118,7 +118,7 @@ void Pipestruct::pipe_functioning_filter(int x) {
 
 void Pipestruct::pipe_adding(Pipestruct& pipe1)
 {
-	Pipe_id = pipemap.size()/4+1;
+	Pipe_id = pipemap.size()+1;
 	cout << "Pipe name: ";
 	cin.clear();
 	cin.ignore(INT_MAX, '\n');
@@ -130,7 +130,7 @@ void Pipestruct::pipe_adding(Pipestruct& pipe1)
 	cout << "Is pipe working? (If it is - type 2 else type 1): ";
 	pipe1.working = work_check();
 	cout << endl;
-	pipemap.insert(make_pair(pipemap.size()+1, pipe1));
+	pipemap.insert(make_pair(Pipe_id, pipe1));
 }
 
 void Pipestruct::pipe_redactng(int pipe_index)

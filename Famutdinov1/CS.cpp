@@ -130,7 +130,7 @@ void Compressor_Station::redact_CS(int CS_index) {
 
 void Compressor_Station::CS_adding(Compressor_Station& CS1)
 {
-	CS_id = CSmap.size()/5+1;
+	CS_id = CSmap.size()+1;
 	cout << "CS name: ";
 	cin.clear();
 	cin.ignore(INT_MAX, '\n');
@@ -300,14 +300,4 @@ void Compressor_Station::find_CS(Compressor_Station& CS1)
 		cout << "Pipes do not exist " << endl;
 	}
 
-}
-
-ofstream& operator << (ofstream& fout, Compressor_Station& CS1) {
-	fout << CS1.name << endl << CS1.department_amount << endl << CS1.functioning_department_amount << endl << CS1.station_efficiency << endl<< CS1.non_functioning_department_percent;
-	return fout;
-}
-
-ifstream& operator >> (ifstream& fin, Compressor_Station& CS1) {
-	fin >> CS1.name >> CS1.department_amount >> CS1.functioning_department_amount >> CS1.station_efficiency >> CS1.non_functioning_department_percent;
-	return fin;
 }

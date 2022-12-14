@@ -32,6 +32,4 @@ public:
 	void CS_adding(Compressor_Station& CS1);
 	void edit_CS(Compressor_Station& CS1);
 	void find_CS(Compressor_Station& CS1);
-	friend ofstream& operator << (ofstream& fout, Compressor_Station& CS1);
-	friend ifstream& operator >> (ifstream& fin, Compressor_Station& CS1);
 };
