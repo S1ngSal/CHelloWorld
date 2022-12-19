@@ -9,6 +9,22 @@
 #include "CS.h"
 #include "Transport.h"
 
+bool pipe_exist(Pipestruct& pipe1, int x) {
+	bool flag = false;
+	if (pipe1.pipe_connected.size() != 0) {
+		for (int i = 0; i < pipe1.pipe_connected.size(); ++i) {
+			if (x != pipe1.pipe_connected[i]) {
+				flag = true;
+			}
+		}
+	}
+	else
+	{
+		flag = true;
+	}
+	return flag;
+};
+
 int CS_is_real(Compressor_Station& CS1) {
 	int x;
 	bool flag = false;
@@ -53,32 +69,28 @@ int width_check() {
 
 void Network::connect(Trio& trio, Compressor_Station& CS1, Pipestruct& Pipe1) {
 	int width;
+	int count_flag = 0;
 	bool flag = false;
 	if (CS1.CSmap.size() > 0) {
+		width = width_check();
+		for (int i = 1; i <= Pipe1.pipemap.size(); ++i)
+		{
+			if (Pipe1.pipemap[i].diameter == width) {
+				if (pipe_exist(Pipe1, i)) {
+					trio.pipe = i;
+					Pipe1.pipe_connected.push_back(i);
+					flag = true;
+				}
+			}
+		}
+		if (!flag) {
+			cout << "Rigth pipe does not exist. Create a new one" << endl;
+		}
 		cout << "Starting CS: " << endl;
 		trio.start = CS_is_real(CS1);
 		cout << "Finishing CS:" << endl;
 		trio.finish = CS_is_real(CS1);
-		width = width_check();
-		while (!flag)
-		{
-			for (int i = 1; i <= Pipe1.pipemap.size(); ++i) {
-				if (Pipe1.pipemap[i].diameter == width) {
-					for (int j = 1; j <= Pipe1.pipe_connected.size(); ++j) {
-						if (j == Pipe1.pipe_connected[j]) {
-							cout << "Rigth pipe not found. Create new one: " << endl;
-							Pipe1.pipe_adding(Pipe1);
-						}
-						else
-						{
-							trio.pipe = i;
-							flag = true;
-						}
-					}
-					break;
-				}
-			}
-		}
+		
 	}
 	else {
 		cout << "CS's do not exist!" << endl;
