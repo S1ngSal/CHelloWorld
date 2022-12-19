@@ -8,6 +8,7 @@
 #include "Checks.h"
 #include "CS.h"
 #include "Transport.h"
+#include <algorithm>
 
 bool pipe_exist(Pipestruct& pipe1, int x) {
 	bool flag = false;
@@ -104,5 +105,78 @@ void Network::connect(Trio& trio, Compressor_Station& CS1, Pipestruct& Pipe1) {
 void Network::show_network(int network_index, Compressor_Station& CS1, Pipestruct& pipe1) {
 	if (NW_member.size() > 0) {
 		cout << CS1.CSmap[NW_member[network_index].start].name << " - " << pipe1.pipemap[NW_member[network_index].pipe].pipe_name << " - " << CS1.CSmap[NW_member[network_index].finish].name << endl;
+	}
+};
+
+void Network::show_sorted_network() {
+	NW_member_copy = NW_member;
+	int count = 0;
+	bool flag = true;
+	bool flag2;
+	vector<int> unsorted_graph;
+	vector<int> sorted_graph;
+	vector<int> megagraph;
+	if (NW_member.size() > 0) {
+		unsorted_graph.push_back(NW_member[1].start);
+		for (int i = 1; i <= NW_member.size(); ++i) {
+			flag = true;
+			for (int j = 1; j <= NW_member.size(); ++j) {
+				if (NW_member[i].finish == NW_member[j].start) {
+					flag = false;
+					break;
+				}
+			}
+		}
+		if (flag) {
+			for (int i = 1; i <= NW_member.size(); ++i) {
+				megagraph.push_back(NW_member[i].start);
+				megagraph.push_back(NW_member[i].finish);
+			}
+			for (int i : megagraph) {
+				flag2 = true;
+				for (int j : unsorted_graph) {
+					if (megagraph[i - 1] == unsorted_graph[j - 1]) {
+						flag2 = false;
+						break;
+					}
+				}
+				if (flag2) {
+					unsorted_graph.push_back(megagraph[i-1]);
+				}
+			}
+			while (NW_member.size() != count)
+			{
+				flag2 = true;
+				for (int i : unsorted_graph) {
+					flag2 = true;
+					for (int j = 0; j < NW_member_copy.size(); ++j) {
+						if (unsorted_graph[i - 1] == NW_member_copy[j].start) {
+							flag2 = false;
+							break;
+						}
+					}
+					if (flag2) {
+						sorted_graph.push_back(unsorted_graph[i - 1]);
+						auto res = remove(unsorted_graph.begin(), unsorted_graph.end(), unsorted_graph[i-1]);
+						unsorted_graph.erase(res, unsorted_graph.end());
+						for (int j = 0; j < NW_member_copy.size(); ++j) {
+							if (sorted_graph[sorted_graph.size()-1] == NW_member_copy[j].finish) {
+								NW_member_copy.erase(j);
+								count++;
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		else
+		{
+			cout << "Graph can not be sorted" << endl;
+		}
+	}
+	else
+	{
+		cout << "There is no graph!" << endl;
 	}
 };

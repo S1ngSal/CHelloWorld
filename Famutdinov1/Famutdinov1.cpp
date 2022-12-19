@@ -49,6 +49,9 @@ int main()
 		case 10:
 			NW.connect(trio, CS, pipe);
 			break;
+		case 11:
+			NW.show_sorted_network();
+			break;
 		case 12:
 			keep_running = false;
 			break;

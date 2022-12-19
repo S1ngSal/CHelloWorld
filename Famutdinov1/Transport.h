@@ -27,6 +27,8 @@ private:
 	vector<Trio> connection;
 public:
 	unordered_map <int, Trio> NW_member;
+	unordered_map<int, Trio>NW_member_copy;
 	void connect(Trio& trio, Compressor_Station& CS1, Pipestruct& Pipe1);
 	void show_network(int network_index, Compressor_Station& CS1, Pipestruct& pipe1);
+	void show_sorted_network();
 };
