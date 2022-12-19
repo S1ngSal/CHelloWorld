@@ -44,8 +44,10 @@ string file_name_input()
 	return file_name;
 }
 
-void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
+void inspect(Pipestruct& pipe1, Compressor_Station& CS1, Network& NW)
 {
+
+
 	cout << endl;
 	for (int i = 1; i <= pipe1.pipemap.size(); i++) {
 		pipe1.show_pipe(i);
@@ -55,6 +57,12 @@ void inspect(Pipestruct& pipe1, Compressor_Station& CS1)
 
 	for (int i = 1; i <= CS1.CSmap.size(); i++) {
 		CS1.show_CS(i);
+	}
+
+	cout << endl;
+
+	for (int i = 1; i <= NW.NW_member.size(); i++) {
+		NW.show_network(i, CS1, pipe1);
 	}
 
 	cout << endl;

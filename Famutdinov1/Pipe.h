@@ -8,13 +8,13 @@ using namespace std;
 class Pipestruct
 {
 private:
-	string pipe_name = "";
+
 	float length = 0;
 	int working = 1;
 	vector<int>pipefilter;
 	int Pipe_id = 0;
 public:
-
+	string pipe_name = "";
 	float diameter = 0;
 	vector<int> pipe_connected;
 	unordered_map<int, Pipestruct> pipemap;

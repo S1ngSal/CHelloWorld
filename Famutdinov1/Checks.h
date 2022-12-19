@@ -3,10 +3,11 @@
 #include <string>
 #include "CS.h"
 #include "Pipe.h"
+#include "Transport.h"
 using namespace std;
 
 float value_check();
 int error_check();
 int menu();
 string file_name_input();
-void inspect(Pipestruct& pipe1, Compressor_Station& CS1);
+void inspect(Pipestruct& pipe1, Compressor_Station& CS1, Network& NW);

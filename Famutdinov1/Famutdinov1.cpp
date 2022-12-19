@@ -26,7 +26,7 @@ int main()
 			CS.CS_adding(CS);
 			break;
 		case 3:
-			inspect(pipe, CS);
+			inspect(pipe, CS, NW);
 			break;
 		case 4:
 			pipe.edit_pipe(pipe);

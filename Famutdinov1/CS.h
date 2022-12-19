@@ -10,14 +10,14 @@ class Compressor_Station
 private:
 
 	int CS_id = 0;
-	string name = "";
+
 	float department_amount = 0;
 	float functioning_department_amount = 0;
 	float station_efficiency = 0;
 	float non_functioning_department_percent = 0;
 
 public:
-	
+	string name = "";
 	vector<int> CSfilter;
 	unordered_map<int, Compressor_Station> CSmap;
 

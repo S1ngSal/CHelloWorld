@@ -69,7 +69,6 @@ int width_check() {
 
 void Network::connect(Trio& trio, Compressor_Station& CS1, Pipestruct& Pipe1) {
 	int width;
-	int count_flag = 0;
 	bool flag = false;
 	if (CS1.CSmap.size() > 0) {
 		width = width_check();
@@ -86,13 +85,24 @@ void Network::connect(Trio& trio, Compressor_Station& CS1, Pipestruct& Pipe1) {
 		if (!flag) {
 			cout << "Rigth pipe does not exist. Create a new one" << endl;
 		}
-		cout << "Starting CS: " << endl;
-		trio.start = CS_is_real(CS1);
-		cout << "Finishing CS:" << endl;
-		trio.finish = CS_is_real(CS1);
+		else
+		{
+			cout << "Starting CS: " << endl;
+			trio.start = CS_is_real(CS1);
+			cout << "Finishing CS:" << endl;
+			trio.finish = CS_is_real(CS1);
+			Network_id++;
+			NW_member.insert(make_pair(Network_id,trio));
+		}
 		
 	}
 	else {
 		cout << "CS's do not exist!" << endl;
+	}
+};
+
+void Network::show_network(int network_index, Compressor_Station& CS1, Pipestruct& pipe1) {
+	if (NW_member.size() > 0) {
+		cout << CS1.CSmap[NW_member[network_index].start].name << " - " << pipe1.pipemap[NW_member[network_index].pipe].pipe_name << " - " << CS1.CSmap[NW_member[network_index].finish].name << endl;
 	}
 };
