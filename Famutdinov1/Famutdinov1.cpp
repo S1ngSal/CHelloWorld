@@ -7,12 +7,13 @@
 #include "Pipe.h"
 #include "Checks.h"
 #include "CS.h"
+#include "Transport.h"
 
 using namespace std;
 
 int main()
 {	
-	string file_name; Pipestruct pipe; Compressor_Station CS;
+	string file_name; Pipestruct pipe; Compressor_Station CS; Network NW; Trio trio;
 	bool keep_running = true;
 	while (keep_running)
 	{
@@ -46,6 +47,9 @@ int main()
 			CS.find_CS(CS);
 			break;
 		case 10:
+			NW.connect(trio, CS, pipe);
+			break;
+		case 12:
 			keep_running = false;
 			break;
 		default:

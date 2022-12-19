@@ -8,18 +8,18 @@ using namespace std;
 class Pipestruct
 {
 private:
-	int Pipe_id = 0;
 	string pipe_name = "";
 	float length = 0;
-	float diameter = 0;
 	int working = 1;
 	vector<int>pipefilter;
-
+	int Pipe_id = 0;
 public:
+
+	float diameter = 0;
+	vector<int> pipe_connected;
 	unordered_map<int, Pipestruct> pipemap;
 
 	float work_check();
-
 	void save_pipe(Pipestruct& pipe1, string file_name);
 	void load_pipe(Pipestruct& pipe1, string file_name);
 	void show_pipe(int pipe_index);

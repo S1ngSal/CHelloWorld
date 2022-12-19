@@ -27,6 +27,9 @@
     <ClCompile Include="CS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Transport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pipe.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Transport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

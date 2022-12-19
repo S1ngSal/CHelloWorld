@@ -9,7 +9,7 @@ float Compressor_Station::comparasion(float bigger_value)
 {
 	float lesser_value;
 	cin >> lesser_value;
-	while (!lesser_value || lesser_value > bigger_value || lesser_value < 0)
+	while (cin.fail() || lesser_value > bigger_value)
 	{
 		cout << endl;
 		cout << "Amount of functioning departments must be a number bigger than 0 \n and can't be bigger than amount of all departments: ";

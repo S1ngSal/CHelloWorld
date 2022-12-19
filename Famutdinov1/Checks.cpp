@@ -19,7 +19,7 @@ int error_check()
 {
 	int check_variable;
 	cin >> check_variable;
-	while (!check_variable)
+	while (cin.fail())
 	{
 		cout << "Input value must be a number bigger than 0: ";
 		cin.clear();
@@ -31,7 +31,7 @@ int error_check()
 
 int menu()
 {
-	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load\n8.Look for a pipe   9. Look for CS   10. Exit" << endl;
+	cout << "1. Add a pipe   2. Add a CS   3. View all objects   4. Edit a pipe   5. Edit a CS   6. Save   7. Load\n8.Look for a pipe   9. Look for CS   10. Connect Network   11. Sort Network   12. Exit" << endl;
 	return error_check();
 }
 
